@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input, select, option {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        img {
+            width: 300px;
+            height: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: #f7f7f7;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<div th:insert="header.html::header"></div>
+<form th:action="@{/employees}" th:object="${employee}" method="post" enctype="multipart/form-data">
+    <label>
+        Prénom(s) :
+        <input id="firstname" type="text" name="firstName" th:field="*{firstName}"/>
+    </label>
+    <label>
+        Nom:
+        <input id="lastname" type="text" name="lastName" th:field="*{lastName}"/>
+    </label>
+    <label>
+        Date de naissance:
+        <input id="birthdate" type="date" name="birthdate" th:field="*{birthDate}"/>
+    </label>
+    <label>
+        Photo de profile:
+        <input id="profile-image" type="file" accept="image/*" name="image" th:field="*{image}"/>
+    </label>
+    <label>
+        Code Pays:
+        <input id="code" type="text" name="code" th:field="*{phoneNumber.code}" placeholder="+261" required/>
+    </label>
+    <label>
+        Telephone:
+        <input id="telephone" type="tel" name="telephone" th:field="*{phoneNumber.phoneNumber}" placeholder="0326063616" required/>
+    </label>
+    </label>
+    <label>
+        Email personnel:
+        <input id="email-perso" type="email" name="email-perso" th:field="*{emailPerso}"/>
+    </label>
+    <label>
+        Email professionnel:
+        <input id="email-pro" type="email" name="email-pro" th:field="*{emailPro}"/>
+    </label>
+    <label>
+        Username:
+        <input id="username" type="text" name="username" th:field="*{principal.username}" required/>
+    </label>
+    <label>
+        Password:
+        <input id="password" type="password" name="password" th:field="*{principal.password}" required/>
+    </label>
+    <label>
+        Nombre d'enfants:
+        <input id="children" type="number" name="children" th:field="*{children}"/>
+    </label>
+    <label>
+        Sexe:
+        <select th:field="*{sex}">
+            <option th:value="H">H</option>
+            <option th:value="F">F</option>
+        </select>
+    </label>
+    <label>
+        Numero CIN:
+        <input id="num-cin" type="number" name="birthdate" th:field="*{nic.number}"/>
+    </label>
+    <label>
+        Date de delivrance:
+        <input id="deliverdate" type="date" name="birthdate" th:field="*{nic.deliverDate}"/>
+    </label>
+    <label>
+        Lieu de delivrance:
+        <input id="deliveraddress" type="text" name="birthdate" th:field="*{nic.deliverAddress}"/>
+    </label>
+    <label>
+        Categorie Socio-professionnel:
+        <select th:field="*{category}">
+            <option th:value="M1">M1</option>
+            <option th:value="M2">M2</option>
+            <option th:value="OS1">OS1</option>
+            <option th:value="OS2">OS2</option>
+            <option th:value="OS3">OS3</option>
+            <option th:value="OP1">OP1</option>
+        </select>
+    </label>
+    <label>
+        Fonction:
+        <select th:field="*{job.job}">
+            <option th:value="Developpeur">Developpeur</option>
+            <option th:value="Directeur">Directeur</option>
+        </select>
+    </label>
+    <label>
+        Date de prise de poste:
+        <input id="entrancedate" type="date" name="entrancedate" th:field="*{entrance}"/>
+    </label>
+    <label>
+        Date de demission:
+        <input id="leavingdate" type="date" name="leavingdate" th:field="*{left}"/>
+    </label>
+    <div style="display: flex; justify-content: space-between">
+        <button id="create-button">Créer</button>
+        <button id="cancel-button" type="button" style="background-color: red"><a th:href="@{/}">Annuler</a></button>
+    </div>
+</form>
+<div th:insert="header.html::footer"></div>
+</body>
+</html>
+</DOCTYPE>

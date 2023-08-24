@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input, select, option {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        a {
+            text-decoration: none;
+            color: #f7f7f7;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<div th:insert="header.html::header"></div>
+<form th:action="@{'/employees/'+${employee.id}}" th:object="${modelEmployee}" method="post" enctype="multipart/form-data">
+    <div style="text-align: center; margin: auto">
+        <label th:if="${modelEmployee.base64Image != ''}" >
+            <input type="text" name="base64Image" th:value="${modelEmployee.base64Image}" th:field="*{base64Image}"  hidden>
+            <img alt="Profile" th:src="'data:image/jpeg;base64,'+${modelEmployee.base64Image}">
+        </label>
+        <label th:unless="${modelEmployee.base64Image != ''}">
+            Photo de profile:
+            <input id="profile-image" type="file" accept="image/*" name="image" th:field="*{image}"/>
+        </label>
+    </div>
+    <label>
+        <input id="matriculate" th:placeholder="${employee.matriculate}" th:value="${modelEmployee.getMatriculate()}" type="text" name="firstName" th:field="*{matriculate}" hidden/>
+    </label>
+    <label>
+        Prénom(s) :
+        <input id="firstname" th:placeholder="${employee.firstName}" th:value="${modelEmployee.getFirstName()}" type="text" name="firstName" th:field="*{firstName}"/>
+    </label>
+    <label>
+        Nom:
+        <input id="lastname" th:placeholder="${employee.lastName}" th:value="${modelEmployee.getLastName()}" type="text" name="lastName" th:field="*{lastName}"/>
+    </label>
+    <label>
+        Date de naissance:
+        <input id="birthdate" th:placeholder="${employee.birthDate}" th:value="${modelEmployee.getBirthDate()}" type="date" name="birthdate" th:field="*{birthDate}"/>
+    </label>
+    <label>
+        Telephone:
+        <input th:value="${modelEmployee.phoneNumber.id}" th:placeholder="${modelEmployee.getPhoneNumber().id}" id="telephoneId" type="tel" name="telephoneId" th:field="*{phoneNumber.id}" hidden/>
+        <input th:value="${modelEmployee.phoneNumber.code}" th:placeholder="${modelEmployee.getPhoneNumber().code}" id="telephoneCode" type="tel" name="telephoneCode" th:field="*{phoneNumber.code}" />
+        <input th:value="${modelEmployee.phoneNumber.phoneNumber}" th:placeholder="${modelEmployee.getPhoneNumber().phoneNumber}" id="telephone" type="tel" name="telephone" th:field="*{phoneNumber.phoneNumber}"/>
+    </label>
+    <label>
+        Nom d'utilisateur:
+        <input th:value="${modelEmployee.principal.username}" th:placeholder="${modelEmployee.principal.username}" id="username" type="text" name="username" th:field="*{principal.username}"/>
+    </label>
+    <label>
+        Mot de passe:
+        <input th:value="${modelEmployee.principal.password}" th:placeholder="${modelEmployee.principal.password}" id="password" type="tel" name="password" th:field="*{principal.password}"/>
+    </label>
+    <label>
+        Email personnel:
+        <input id="email-perso" th:placeholder="${employee.emailPerso}" th:value="${modelEmployee.getEmailPerso()}" type="email" name="email-perso" th:field="*{emailPerso}"/>
+    </label>
+    <label>
+        Email professionnel:
+        <input id="email-pro" th:placeholder="${employee.emailPro}" th:value="${modelEmployee.getEmailPro()}" type="email" name="email-pro" th:field="*{emailPro}"/>
+    </label>
+    <label>
+        Nombre d'enfants:
+        <input id="children" th:placeholder="${employee.children}" th:value="${modelEmployee.getChildren()}" type="number" name="children" th:field="*{children}"/>
+    </label>
+    <label>
+        <input hidden="hidden" id="cnaps" th:placeholder="${employee.getCnaps}" type="text" th:value="${modelEmployee.getCnaps()}" name="cnaps" th:field="*{cnaps}"/>
+    </label>
+    <label>
+        Sexe:
+        <select th:field="*{sex}" th:value="${employee.getSex()}">
+            <option th:value="H">H</option>
+            <option th:value="F">F</option>
+        </select>
+    </label>
+    <label>
+        Numero CIN:
+        <input id="num-cin" th:placeholder="${employee.nic.number}" type="number" name="birthdate" th:field="*{nic.number}" th:value="${modelEmployee.getNic().getNumber()}"/>
+    </label>
+    <label>
+        Date de delivrance:
+        <input id="deliverdate" type="date" th:placeholder="${employee.nic.deliverDate}" name="birthdate" th:field="*{nic.deliverDate}" th:value="${modelEmployee.nic.deliverDate}"/>
+    </label>
+    <label>
+        Lieu de delivrance:
+        <input id="deliveraddress" type="text" name="birthdate" th:placeholder="${employee.nic.deliverAddress}" th:field="*{nic.deliverAddress}" th:value="${modelEmployee.nic.deliverAddress}"/>
+    </label>
+    <label>
+        Categorie Socio-professionnel:
+        <select th:field="*{category}" th:value="${modelEmployee.category}">
+            <option th:value="M1">M1</option>
+            <option th:value="M2">M2</option>
+            <option th:value="OS1">OS1</option>
+            <option th:value="OS2">OS2</option>
+            <option th:value="OS3">OS3</option>
+            <option th:value="OP1">OP1</option>
+        </select>
+    </label>
+    <label>
+        Fonction:
+        <select th:field="*{job.job}" th:value="${modelEmployee.job.job}">
+            <option th:value="Developpeur">Developpeur</option>
+            <option th:value="Directeur">Directeur</option>
+        </select>
+        <input type="text" th:field="*{job.id}" th:value="${modelEmployee.job.id}" >
+    </label>
+    <div style="display: flex; justify-content: space-between">
+        <button id="create-button">Sauvegarder</button>
+        <button type="button" style="background-color: red" id="cancel-button"><a th:href="@{/}">Annuler</a></button>
+    </div>
+</form>
+<div th:insert="header.html::footer"></div>
+</body>
+</html>
+</DOCTYPE>

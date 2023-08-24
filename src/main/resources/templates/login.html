@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Head</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        i {
+            margin-right: 5px;
+        }
+
+
+        button:hover,
+        button:focus {
+            background-color: #45a049;
+        }
+
+        a {
+            text-decoration: none;
+            color: #f7f7f7;
+            background-color: blue;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<form method="post" th:action="@{/authenticate}" th:object="${principal}">
+    <label>
+        <i class="fas fa-envelope"></i>
+        Username :
+        <input type="text" name="email" th:field="*{username}"/>
+    </label>
+    <label>
+        <i class="fas fa-lock"></i>
+        Mot de passe :
+        <input type="password" name="password" th:field="*{password}"/>
+    </label>
+    <button><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+</form>
+</body>
+</html>

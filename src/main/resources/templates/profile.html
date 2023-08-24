@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        body > div {
+            width: 800px;
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .employee-container {
+            width: 100%;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .employee-container img {
+            width: 300px;
+            height: 100%;
+        }
+
+        .employee-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        a {
+            text-decoration: none;
+            background-color: #4caf50;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="header.html::header"></div>
+<div>
+    <div class="employee-container">
+        <div th:if="${employee.image != ''}">
+            <img alt="Profile" th:src="'data:image/jpeg;base64,'+${employee.getImage()}">
+        </div>
+        <div th:unless="${employee.image != ''}">
+            <p>Aucune image</p>
+        </div>
+        <div class="employee-info">
+            <p><strong>Matricule :</strong> <span th:text="${employee.matriculate}"></span></p>
+            <p><strong>Nom :</strong> <span th:text="${employee.firstName}"></span></p>
+            <p><strong>Prénoms :</strong> <span th:text="${employee.lastName}"></span></p>
+            <p><strong>Date de naissance :</strong> <span th:text="${employee.birthDate}"></span></p>
+            <p><strong>Sexe :</strong> <span th:text="${employee.sex}"></span></p>
+            <p><strong>Telephone :</strong> <span th:text="${employee.phoneNumbers.get(0).phoneNumberWithCode}"></span></p>
+            <p><strong>Nombre d'enfants :</strong> <span th:text="${employee.children}"></span></p>
+            <p><strong>Numero CIN :</strong> <span th:text="${employee.nic.number}"></span></p>
+            <p><strong>Date de delivrance :</strong> <span th:text="${employee.nic.deliverDate}"></span></p>
+            <p><strong>Lieu de delivrance :</strong> <span th:text="${employee.nic.deliverAddress}"></span></p>
+            <p><strong>Email personnel :</strong> <span th:text="${employee.emailPerso}"></span></p>
+            <p><strong>Email professionnel :</strong> <span th:text="${employee.emailPro}"></span></p>
+            <p><strong>Fonction :</strong> <span th:text="${employee.job.job}"></span></p>
+            <p><strong>Categorie :</strong> <span th:text="${employee.category}"></span></p>
+            <p><strong>Numero CNAPS :</strong> <span th:text="${employee.getCnaps}"></span></p>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: space-between">
+        <button type="button"><a th:href="@{'/'}">Retour</a></button>
+        <a style="background-color: red" th:href="@{'/employees/'+${employee.id}+'/edit'}">Editer</a>
+    </div>
+</div>
+<div th:insert="header.html::footer"></div>
+</body>
+</html>
