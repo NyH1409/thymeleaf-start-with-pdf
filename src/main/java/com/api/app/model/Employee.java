@@ -2,10 +2,13 @@ package com.api.app.model;
 
 import lombok.*;
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Entity
@@ -22,7 +25,8 @@ public class Employee implements Serializable {
   private String matriculate;
   private String firstName;
   private String lastName;
-  private String birthDate;
+  @DateTimeFormat(pattern="yyyy-MM-dd")
+  private LocalDate birthDate;
   @Type(type = "text")
   private String image;
   private String sex;
@@ -39,15 +43,24 @@ public class Employee implements Serializable {
   private Category category;
   @OneToOne(cascade = CascadeType.ALL)
   private Principal principal;
-  private String entranceDate;
-  private String leavingDate;
+  @DateTimeFormat(pattern="yyyy-MM-dd")
+  private LocalDate entranceDate;
+  @DateTimeFormat(pattern="yyyy-MM-dd")
+  private LocalDate leavingDate;
   private String cnaps;
+  private Double salary;
+  @Transient
+  private int age;
 
   @PrePersist
   public void generateCustomMatriculate() {
     if (matriculate == null) {
       matriculate = String.format("MAT-EMPLOYEE-%s", Instant.now().toEpochMilli());
     }
+  }
+
+  public int getAge() {
+    return Period.between(birthDate, LocalDate.now()).getYears();
   }
 
   public enum Category {

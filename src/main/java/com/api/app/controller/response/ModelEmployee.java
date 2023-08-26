@@ -12,7 +12,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +29,8 @@ public class ModelEmployee {
     private String matriculate;
     private String firstName;
     private String lastName;
-    private String birthDate;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private LocalDate birthDate;
     private MultipartFile image;
     private String base64Image;
     private String sex;
@@ -40,6 +44,10 @@ public class ModelEmployee {
     private Long children;
     private String category;
     private String cnaps;
-    private String entrance;
-    private String left;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private LocalDate entrance;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private LocalDate left;
+    private Double salary;
+    private int age;
 }

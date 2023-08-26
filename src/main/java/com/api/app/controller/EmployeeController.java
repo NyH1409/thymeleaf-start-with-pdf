@@ -10,6 +10,7 @@ import com.api.app.model.mapper.EmployeeMapper;
 import com.api.app.service.CompanyService;
 import com.api.app.service.EmployeeService;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -61,7 +62,7 @@ public class EmployeeController {
                                @RequestParam(value = "pageSize", required = false) Integer pageSize
     ) {
         try {
-            provider.isAuthenticated();
+            //provider.isAuthenticated();
             List<Employee> employees = service.getEmployees(
               fistName, lastName, sex, job, code, entranceDatetime, leavingDatetime, firstNameOrder, lastNameOrder, sexOrder, jobOrder, codeOrder, page, pageSize);
             List<Company> companies = companyService.getCompanies();
@@ -78,7 +79,7 @@ public class EmployeeController {
     @GetMapping("/employees/{id}")
     public String getEmployee(ModelMap model, @PathVariable("id") String employeeId) {
         try {
-            provider.isAuthenticated();
+            //provider.isAuthenticated();
             Employee employee = service.getEmployee(employeeId);
             List<Company> companies = companyService.getCompanies();
             model.addAttribute("company", companies.get(0));
@@ -92,7 +93,7 @@ public class EmployeeController {
     @GetMapping("/employees/{id}/edit")
     public String updateEmployee(ModelMap model, @PathVariable("id") String employeeId) {
         try {
-            provider.isAuthenticated();
+            //provider.isAuthenticated();
             Employee employee = service.getEmployee(employeeId);
             ModelEmployee modelEmployee = mapper.toView(employee);
             List<Company> companies = companyService.getCompanies();
@@ -108,7 +109,7 @@ public class EmployeeController {
     @PostMapping(value = "/employees")
     public RedirectView createEmployee(@ModelAttribute ModelEmployee employee) {
         try {
-            provider.isAuthenticated();
+            //provider.isAuthenticated();
             service.crupdateEmployee(mapper.toDomain(employee));
             return new RedirectView("/");
         } catch (ForbiddenException e) {
@@ -119,7 +120,7 @@ public class EmployeeController {
     @PostMapping(value = "/employees/{id}")
     public RedirectView updateEmployee(@PathVariable("id") String id, @ModelAttribute ModelEmployee employee) {
         try {
-            provider.isAuthenticated();
+            //provider.isAuthenticated();
             service.crupdateEmployee(mapper.toDomain(employee.toBuilder().id(id).build()));
             return new RedirectView("/");
         } catch (ForbiddenException e) {
@@ -127,10 +128,23 @@ public class EmployeeController {
         }
     }
 
+    @GetMapping(value = "/employees/{id}/raw")
+    public String generatePdf(ModelMap model, @PathVariable("id") String employeeId, HttpServletResponse response) {
+        try {
+            List<Company> companies = companyService.getCompanies();
+            Employee employee = service.generatePdf(employeeId, companies.get(0), response);
+            model.addAttribute("company", companies.get(0));
+            model.addAttribute("employee", employee);
+            return "profile";
+        } catch (ForbiddenException e) {
+            return "redirect:/login";
+        }
+    }
+
     @PostMapping(value = "/employees/raw")
     public RedirectView generateCSV(@ModelAttribute ModelToCSV modelToCSV, HttpServletResponse response) throws IOException {
         try {
-            provider.isAuthenticated();
+            //provider.isAuthenticated();
             response.setContentType("text/csv");
             DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
             String currentDateTime = dateFormatter.format(new Date());

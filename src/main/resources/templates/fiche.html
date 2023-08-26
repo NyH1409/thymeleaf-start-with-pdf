@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Employee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        p{
+            font-size: 12px;
+        }
+
+        body > div {
+            background-color: #fff;
+        }
+        .employee-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .employee-container img {
+            width: 300px;
+            height: 100%;
+        }
+
+        .employee-info p {
+            margin: 5px 0;
+        }
+
+        a {
+            text-decoration: none;
+            background-color: #4caf50;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="employee-container">
+        <div th:if="${employee.image != ''}">
+            <img alt="Profile" th:src="'data:image/jpeg;base64,'+${employee.getImage()}" />
+        </div>
+        <div th:unless="${employee.image != ''}">
+            <p>Aucune image</p>
+        </div>
+        <div class="employee-info">
+            <h2>FICHE EMPLOYÉ</h2>
+            <p><strong>Matricule :</strong> <span th:text="${employee.matriculate}"></span></p>
+            <p><strong>Nom :</strong> <span th:text="${employee.firstName}"></span></p>
+            <p><strong>Prénoms :</strong> <span th:text="${employee.lastName}"></span></p>
+            <p><strong>Date de naissance :</strong> <span th:text="${employee.birthDate}"></span></p>
+            <p><strong>Âge :</strong> <span th:text="${employee.age}"></span></p>
+            <p><strong>Date de d'embauche :</strong> <span th:text="${employee.entranceDate}"></span></p>
+            <p><strong>Date de départ :</strong> <span th:text="${employee.leavingDate}"></span></p>
+            <p><strong>Numero CNAPS :</strong> <span th:text="${employee.getCnaps}"></span></p>
+        </div>
+    </div>
+    <div>
+        <h2>Informations sur le salaire</h2>
+        <p>Salaire brute actuel : <span th:text="${employee.salary}"></span> Ariary / mois</p>
+    </div>
+    <div >
+        <hr />
+        <tr>
+            <td>
+                <div style="text-align: center">
+                    <img style="width: 80px; height: 80px" alt="logo" th:src="'data:image/jpeg;base64,'+${company.logo}" />
+                    <p th:text="${company.slogan}"></p>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+                <div>
+                    <p><strong>NIF</strong> : <span th:text="${company.nif}"></span></p>
+                    <p><strong>STAT</strong> : <span th:text="${company.stat}"></span></p>
+                    <p><strong>RCS</strong> : <span th:text="${company.rcs}"></span></p>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+                <div>
+                    <p><strong>Adresse</strong> : <span th:text="${company.address}"></span></p>
+                    <p><strong>Email</strong> : <span th:text="${company.email}"></span></p>
+                    <p><strong>Telephone</strong> : <span th:text="${company.phoneNumbers.get(0).phoneNumber}"></span></p>
+                </div>
+            </td>
+        </tr>
+    </div>
+</div>
+</body>
+</html>

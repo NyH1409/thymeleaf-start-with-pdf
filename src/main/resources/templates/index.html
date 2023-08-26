@@ -164,8 +164,15 @@
             <p>Prise de poste : <span th:text="${employee.entranceDate}"></span></p>
             <p>Demission : <span th:text="${employee.leavingDate}"></span></p>
             <br>
-            <div>
-                <a style="background-color: #007bff" th:href="@{'/employees/'+${employee.id}}">Profil</a>
+            <div style="display: flex ; justify-content: space-between">
+                <div>
+                    <a style="background-color: #007bff" th:href="@{'/employees/'+${employee.id}}">Profil</a>
+                </div>
+                <div>
+                    <form th:action="@{'/employees/'+${employee.id}+'/raw'}" method="get" enctype="multipart/form-data">
+                        <button style="background-color: red">Exporter PDF</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

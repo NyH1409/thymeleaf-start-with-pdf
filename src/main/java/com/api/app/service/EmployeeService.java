@@ -1,9 +1,11 @@
 package com.api.app.service;
 
+import com.api.app.model.Company;
 import com.api.app.model.Employee;
 import com.api.app.model.exception.ApiException;
 import com.api.app.repository.Repository;
 import com.api.app.repository.dao.EmployeeDao;
+import com.api.app.service.utils.FileUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,7 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
@@ -24,22 +27,24 @@ import java.util.stream.Collectors;
 public class EmployeeService {
     private final EmployeeDao employeeDao;
     private final Repository mainRepository;
+    private static final String EMPLOYEE_TEMPLATE = "fiche";
+    private final FileUtils<Employee, Company> fileUtils;
 
     public List<Employee> getEmployees(
-      String firstName,
-      String lastName,
-      String sex,
-      String job,
-      String code,
-      String entranceDatetime,
-      String leavingDatetime,
-      String firstNameOrder,
-      String lastNameOrder,
-      String sexOrder,
-      String jobOrder,
-      String codeOrder,
-      Integer page,
-      Integer pageSize) {
+            String firstName,
+            String lastName,
+            String sex,
+            String job,
+            String code,
+            String entranceDatetime,
+            String leavingDatetime,
+            String firstNameOrder,
+            String lastNameOrder,
+            String sexOrder,
+            String jobOrder,
+            String codeOrder,
+            Integer page,
+            Integer pageSize) {
         int pageValue = page == null ? 0 : page;
         int pageSizeValue = pageSize == null ? 10 : pageSize;
         Pageable pageable = PageRequest.of(pageValue, pageSizeValue);
@@ -75,4 +80,15 @@ public class EmployeeService {
             throw new ApiException(e.getMessage());
         }
     }
+
+    public Employee generatePdf(String employeeId, Company company, HttpServletResponse response) {
+        try {
+            Employee employee = getEmployee(employeeId);
+            return fileUtils.generateFile(employee, company, EMPLOYEE_TEMPLATE, response);
+        } catch (Exception e) {
+            throw new ApiException(e.getMessage());
+        }
+    }
+
+
 }

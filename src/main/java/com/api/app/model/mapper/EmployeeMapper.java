@@ -59,6 +59,8 @@ public class EmployeeMapper {
                     .category(categoryFromString(employee.getCategory()))
                     .children(employee.getChildren())
                     .cnaps(employee.getCnaps())
+                    .salary(employee.getSalary())
+                    .age(employee.getAge())
                     .build();
         } catch (IOException e) {
             throw new ApiException(e.getMessage());
@@ -89,6 +91,8 @@ public class EmployeeMapper {
                 .category(employee.getCategory().toString())
                 .children(employee.getChildren())
                 .cnaps(employee.getCnaps())
+                .salary(employee.getSalary())
+                .age(employee.getAge())
           .job(employee.getJob())
           .build();
     }
