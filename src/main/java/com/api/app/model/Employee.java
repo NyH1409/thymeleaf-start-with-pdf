@@ -25,7 +25,7 @@ public class Employee implements Serializable {
   private String matriculate;
   private String firstName;
   private String lastName;
-  @DateTimeFormat(pattern="yyyy-MM-dd")
+  @DateTimeFormat(pattern="yyyy-dd-MM")
   private LocalDate birthDate;
   @Type(type = "text")
   private String image;
@@ -57,10 +57,6 @@ public class Employee implements Serializable {
     if (matriculate == null) {
       matriculate = String.format("MAT-EMPLOYEE-%s", Instant.now().toEpochMilli());
     }
-  }
-
-  public int getAge() {
-    return Period.between(birthDate, LocalDate.now()).getYears();
   }
 
   public enum Category {

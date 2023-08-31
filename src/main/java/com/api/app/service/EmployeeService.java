@@ -2,10 +2,15 @@ package com.api.app.service;
 
 import com.api.app.model.Company;
 import com.api.app.model.Employee;
+import com.api.app.model.enummodel.BirthEnum;
 import com.api.app.model.exception.ApiException;
+import com.api.app.model.exception.BadRequestException;
 import com.api.app.repository.Repository;
 import com.api.app.repository.dao.EmployeeDao;
 import com.api.app.service.utils.FileUtils;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -81,12 +86,46 @@ public class EmployeeService {
         }
     }
 
-    public Employee generatePdf(String employeeId, Company company, HttpServletResponse response) {
+    public Employee generatePdf(String employeeId, Company company, String birthType, String interval, HttpServletResponse response) {
         try {
-            Employee employee = getEmployee(employeeId);
-            return fileUtils.generateFile(employee, company, EMPLOYEE_TEMPLATE, response);
+            Employee employee = getEmployee(employeeId).toBuilder().build();
+            switch (birthEnumFromString(birthType)){
+                case BIRTHDAY:
+                    employee = employee.toBuilder()
+                        .age(Period.between(employee.getBirthDate(), LocalDate.now()).getYears())
+                        .build();
+                    return fileUtils.generateFile(employee, company, EMPLOYEE_TEMPLATE, response);
+                case YEAR_ONLY:
+                    employee = employee.toBuilder()
+                        .age(LocalDate.now().getYear() - employee.getBirthDate().getYear())
+                        .build();
+                    return fileUtils.generateFile(employee, company, EMPLOYEE_TEMPLATE, response);
+                case CUSTOM_DELAY:
+                    long intervalValue = interval != null ? Long.parseLong(interval) : 0;
+                    var birth = employee.getBirthDate().minus(intervalValue, ChronoUnit.DAYS);
+                    employee = employee.toBuilder()
+                        .age(Period.between(birth, LocalDate.now()).getYears())
+                        .build();
+                    return fileUtils.generateFile(employee, company, EMPLOYEE_TEMPLATE, response);
+                default:
+                    throw new BadRequestException("Invalid type format");
+            }
         } catch (Exception e) {
             throw new ApiException(e.getMessage());
+        }
+    }
+
+
+    private BirthEnum birthEnumFromString(String birthType){
+        switch (birthType){
+            case "BIRTHDAY":
+                return BirthEnum.BIRTHDAY;
+            case "YEAR_ONLY":
+                return BirthEnum.YEAR_ONLY;
+            case "CUSTOM_DELAY":
+                return BirthEnum.CUSTOM_DELAY;
+            default:
+                throw new BadRequestException("Invalid type format");
         }
     }
 

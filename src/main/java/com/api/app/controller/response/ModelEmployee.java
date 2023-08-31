@@ -29,7 +29,7 @@ public class ModelEmployee {
     private String matriculate;
     private String firstName;
     private String lastName;
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-dd-MM")
     private LocalDate birthDate;
     private MultipartFile image;
     private String base64Image;

@@ -170,6 +170,14 @@
                 </div>
                 <div>
                     <form th:action="@{'/employees/'+${employee.id}+'/raw'}" method="get" enctype="multipart/form-data">
+                        <select name="type">
+                            <option th:value="BIRTHDAY">BIRTHDAY</option>
+                            <option th:value="YEAR_ONLY">YEAR ONLY</option>
+                            <option th:value="CUSTOM_DELAY">CUSTOM DELAY</option>
+                        </select>
+                        <label> Interval :
+                            <input name="interval" type="text"/>
+                        </label>
                         <button style="background-color: red">Exporter PDF</button>
                     </form>
                 </div>

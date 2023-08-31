@@ -129,10 +129,13 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/employees/{id}/raw")
-    public String generatePdf(ModelMap model, @PathVariable("id") String employeeId, HttpServletResponse response) {
+    public String generatePdf(ModelMap model, @PathVariable("id") String employeeId,
+                              @RequestParam("type") String birthType,
+                              @RequestParam(value = "interval", required = false) String interval,
+                              HttpServletResponse response) {
         try {
             List<Company> companies = companyService.getCompanies();
-            Employee employee = service.generatePdf(employeeId, companies.get(0), response);
+            Employee employee = service.generatePdf(employeeId, companies.get(0), birthType, interval, response);
             model.addAttribute("company", companies.get(0));
             model.addAttribute("employee", employee);
             return "profile";
